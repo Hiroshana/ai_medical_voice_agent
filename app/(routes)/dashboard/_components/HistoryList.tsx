@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { useState } from "react";
+import AddNewConsultDialog from "./AddNewConsultDialog";
 
 function HistoryList() {
   const [historyList, setHistoryList] = useState([]);
@@ -23,9 +24,7 @@ function HistoryList() {
             It appears that you haven’t had the opportunity to consult with any
             doctors yet.
           </p>
-          <Button className="mt-3">
-            + Would you like assistance in arranging a consultation?
-          </Button>
+          <AddNewConsultDialog />
         </div>
       ) : (
         <div>List</div>
