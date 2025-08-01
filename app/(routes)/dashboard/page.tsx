@@ -2,7 +2,7 @@ import React from "react";
 import HistoryList from "./_components/HistoryList";
 import { Button } from "@/components/ui/button";
 import AgentList from "./_components/DoctorAgentList";
-import AddNewConsultDialog from "./_components/AddNewConsultDialog";
+import AddNewConsultDialog from "./_components/AddNewSessionDialog";
 
 const Dashboard = () => {
   return (
