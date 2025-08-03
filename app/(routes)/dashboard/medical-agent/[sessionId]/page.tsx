@@ -2,13 +2,14 @@
 
 import axios from "axios";
 import Vapi from "@vapi-ai/web";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { doctorAgent } from "../../_components/DoctorAgentCard";
 import { Circle, PhoneCall, PhoneOff } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Provider from "@/app/provider";
+import { toast } from "sonner";
 
 type sessionDetail = {
   id: number;
@@ -31,6 +32,8 @@ function MedicalVoiceAgent() {
   const [currentRoll, setCurrentRole] = useState<string | null>();
   const [liveTranscript, setLiveTranscript] = useState<string>();
   const [messages, setMessages] = useState<message[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     sessionId && GetSessionDetails();
@@ -114,7 +117,8 @@ function MedicalVoiceAgent() {
   /**
    * End call
    */
-  const endCall = () => {
+  const endCall = async () => {
+    setLoading(true);
     if (!vapiInstantance) return;
     //Stop the call
     vapiInstantance.stop();
@@ -122,10 +126,30 @@ function MedicalVoiceAgent() {
     vapiInstantance.off("call-start");
     vapiInstantance.off("call-end");
     vapiInstantance.off("message");
+    vapiInstantance.off("speech-start");
+    vapiInstantance.off("speech-end");
 
     //Reset call state
     setCallStarted(false);
     setVapiInstance(null);
+
+    toast.success("your report is generated");
+    router.replace("dashboard");
+
+    //const result = await GenerateReport();
+
+    setLoading(false);
+  };
+
+  const GenerateReport = async () => {
+    const result = await axios.post("/api/medical-report", {
+      messages: messages,
+      sessionDetail: sessionDetail,
+      sessionId: sessionId,
+    });
+
+    console.log(result.data);
+    return result.data;
   };
   return (
     <div className="p-5 border rounded-3xl bg-secondary">
@@ -167,13 +191,18 @@ function MedicalVoiceAgent() {
             )}
           </div>
           {!callStarted ? (
-            <Button className="mt-20" onClick={StartCall}>
-              <PhoneCall />
+            <Button className="mt-20" onClick={StartCall} disabled={loading}>
+              {loading ? <PhoneCall className="animate-spin" /> : <PhoneCall />}
               Start Call
             </Button>
           ) : (
-            <Button variant={"destructive"} onClick={endCall}>
-              <PhoneOff /> End Call
+            <Button
+              variant={"destructive"}
+              onClick={endCall}
+              disabled={loading}
+            >
+              {loading ? <PhoneOff className="animate-spin" /> : <PhoneOff />}
+              End Call
             </Button>
           )}
         </div>
