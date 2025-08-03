@@ -11,13 +11,13 @@ import { Button } from "@/components/ui/button";
 import Provider from "@/app/provider";
 import { toast } from "sonner";
 
-type sessionDetail = {
+export type sessionDetail = {
   id: number;
   notes: string;
   sessionId: string;
   report: JSON;
   selectedDoctor: doctorAgent;
-  createOn: string;
+  createdOn: string;
 };
 type message = {
   role: string;

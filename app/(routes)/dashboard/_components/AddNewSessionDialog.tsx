@@ -58,8 +58,8 @@ function AddNewConsultDialog() {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button className="mt-3">
+      <DialogTrigger className="mt-3">
+        <Button>
           + Would you like assistance in arranging a consultation?
         </Button>
       </DialogTrigger>

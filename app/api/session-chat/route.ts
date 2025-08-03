@@ -1,5 +1,5 @@
 import { sessionChatTable } from "@/config/schema";
-import { eq, lt, gte, ne } from "drizzle-orm";
+import { eq, lt, gte, ne, desc } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 import { NextRequest, NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
@@ -63,23 +63,49 @@ export async function GET(req: NextRequest) {
     const user = await currentUser();
     console.log("Current User:", user);
 
-    // Query the database for session chat
-    const result = await db
-      .select()
-      .from(sessionChatTable)
-      //@ts-ignore
-      .where(eq(sessionChatTable.sessionId, sessionId));
+    if (sessionId == "all") {
+      // Query the database for session chat
+      const result = await db
+        .select()
+        .from(sessionChatTable)
+        //@ts-ignore
+        .where(
+          eq(
+            sessionChatTable.createdBy,
+            user?.primaryEmailAddress?.emailAddress
+          )
+        )
+        .orderBy(desc(sessionChatTable.id));
 
-    // Log result to see what data we're getting
-    console.log("Query Result:", result);
+      // If no results, return 404
+      if (!result || result.length === 0) {
+        return NextResponse.json(
+          { error: "No session found" },
+          { status: 404 }
+        );
+      }
 
-    // If no results, return 404
-    if (!result || result.length === 0) {
-      return NextResponse.json({ error: "No session found" }, { status: 404 });
+      // Return the first result
+      return NextResponse.json(result);
+    } else {
+      // Query the database for session chat
+      const result = await db
+        .select()
+        .from(sessionChatTable)
+        //@ts-ignore
+        .where(eq(sessionChatTable.sessionId, sessionId));
+
+      // If no results, return 404
+      if (!result || result.length === 0) {
+        return NextResponse.json(
+          { error: "No session found" },
+          { status: 404 }
+        );
+      }
+
+      // Return the first result
+      return NextResponse.json(result[0]);
     }
-
-    // Return the first result
-    return NextResponse.json(result[0]);
   } catch (error) {
     console.error("Error in API route:", error);
     return NextResponse.json(

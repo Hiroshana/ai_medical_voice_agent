@@ -1,5 +1,5 @@
 import { db } from "@/config/db";
-import { usersTable, sessionsChatTable } from "@/config/schema";
+import { usersTable, sessionChatTable } from "@/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
@@ -43,9 +43,9 @@ export async function GET(req: NextRequest) {
 
   const result = await db
     .select()
-    .from(sessionsChatTable)
+    .from(sessionChatTable)
     //@ts-ignore
-    .where(eq(SessionChatTable.sessionId, sessionId));
+    .where(eq(sessionChatTable.sessionId, sessionId));
 
   return NextResponse.json(result[0]);
 }
