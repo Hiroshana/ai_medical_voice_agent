@@ -14,10 +14,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { IconArrowRight } from "@tabler/icons-react";
 import axios from "axios";
-import DoctorAgentCard, { doctorAgent } from "./DoctorAgentCard";
+import { doctorAgent } from "./DoctorAgentCard";
 import { Loader, Loader2 } from "lucide-react";
 import SuggestedDoctorCard from "./SuggestedDoctorCard";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 
 function AddNewConsultDialog() {
   const [note, setNote] = useState<string>();
@@ -25,6 +26,9 @@ function AddNewConsultDialog() {
   const [suggestedDoctors, setSuggestedDoctors] = useState<doctorAgent[]>();
   const [selectedDoctor, setSelectedDoctor] = useState<doctorAgent>();
   const router = useRouter();
+
+  const { has } = useAuth();
+  const isPaidUser = has && has({ plan: "pro" });
 
   const OnClickNext = async () => {
     setLoading(true);
@@ -79,7 +83,7 @@ function AddNewConsultDialog() {
             ) : (
               <div>
                 <h2> Select the doctor</h2>
-                <div className="gird grid-cols-3 gap-5">
+                <div className="grid grid-cols-3 gap-5">
                   {/* suggested doctors */}
                   {suggestedDoctors.map((doctor, index) => (
                     <SuggestedDoctorCard

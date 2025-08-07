@@ -1,13 +1,17 @@
 import HeroSectionOne from "@/components/HeroSectionOne";
 import SectionTwo from "@/components/FeatureSection";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import HowItWorks from "@/components/HowItWorks";
+import KeyFeatures from "@/components/KeyFeatures";
+import OurSpecializedAgents from "@/components/OurSpecializedAgents";
 
 export default function Home() {
   return (
     <>
       <HeroSectionOne />;
-      <SectionTwo />
+      <HowItWorks />
+      <OurSpecializedAgents />
+      <KeyFeatures />
+      {/* <SectionTwo /> */}
     </>
   );
 }

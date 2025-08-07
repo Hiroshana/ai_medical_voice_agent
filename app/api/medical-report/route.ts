@@ -41,8 +41,9 @@ export async function POST(req: NextRequest) {
     const userInput =
       "AI Doctor Agent Info: " +
       JSON.stringify(sessionDetail) +
-      "Conversation: " +
+      ", Conversation: " +
       JSON.stringify(messages);
+
     const completion = await openai.chat.completions.create({
       model: "google/gemini-2.5-flash-lite",
       messages: [

@@ -11,6 +11,7 @@ import React from "react";
 import { sessionDetail } from "../medical-agent/[sessionId]/page";
 import { Button } from "@/components/ui/button";
 import moment from "moment";
+import ViewReport from "./ViewReport";
 
 type Props = {
   historyList: sessionDetail[];
@@ -40,9 +41,7 @@ function HistoryTable({ historyList }: Props) {
                 {moment(new Date(record.createdOn)).fromNow()}
               </TableCell>
               <TableCell className="text-right">
-                <Button variant={"outline"} size={"sm"}>
-                  View Report
-                </Button>
+                <ViewReport record={record} />
               </TableCell>
             </TableRow>
           ))}

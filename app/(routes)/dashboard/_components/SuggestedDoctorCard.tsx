@@ -1,7 +1,5 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { doctorAgent } from "./DoctorAgentCard";
-import { Button } from "@/components/ui/button";
-import { IconArrowRight } from "@tabler/icons-react";
 import Image from "next/image";
 
 type props = {
@@ -27,7 +25,7 @@ function SuggestedDoctorCard({
         alt={doctorAgent?.specialist}
         width={70}
         height={70}
-        className="h-[50px] w-[50px] object-cover rounded-4xl"
+        className="h-[50px] w-[50px] object-cover  rounded-4xl"
       />
       <h2 className="font-bold text-sm text-center">
         {doctorAgent?.specialist}

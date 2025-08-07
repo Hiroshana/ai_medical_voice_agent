@@ -58,11 +58,12 @@ function MedicalVoiceAgent() {
         language: "en",
       },
       voice: {
-        provider: "LMNT",
+        provider: "lmnt",
         voiceId: sessionDetail?.selectedDoctor?.voiceId,
       },
       model: {
-        Provider: "openai",
+        provider: "openai",
+        model: "gpt-4",
         messages: [
           {
             role: "system",
